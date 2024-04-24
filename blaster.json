@@ -1,0 +1,72 @@
+{
+    "interfaces": {
+        "tx-interval": 0.001,
+        "rx-interval": 0.01,
+        "io-slots": 32768,
+        "links": [
+            {
+                "__comment__": "TX",
+                "interface": "eth0",
+                "tx-threads": 8
+            },
+            {
+                "__comment__": "RX1",
+                "interface": "eth1",
+                "rx-threads": 8
+            },
+            {
+                "__comment__": "RX2",
+                "interface": "eth2",
+                "rx-threads": 8
+            }
+        ],
+        "network": [
+            {
+                "__comment__": "TX",
+                "interface": "eth0",
+                "address": "192.0.2.130/29",
+                "gateway": "192.0.2.129",
+                "vlan": 10
+            },
+            {
+                "__comment__": "RX1",
+                "interface": "eth1",
+                "address": "192.0.2.194/29",
+                "gateway": "192.0.2.193",
+                "vlan": 10
+            },
+            {
+                "__comment__": "RX2",
+                "interface": "eth2",
+                "address": "192.0.2.202/29",
+                "gateway": "192.0.2.201",
+                "vlan": 10
+            }
+        ]
+    },
+    "bgp": [
+        {
+            "__comment__": "RX1",
+            "network-interface": "eth1:10",
+            "local-ipv4-address": "192.0.2.194",
+            "peer-ipv4-address": "192.0.2.193",
+            "raw-update-file": "/tmp/rx1.bgp",
+            "local-as": 65000,
+            "peer-as": 65000
+        },
+        {
+            "__comment__": "RX2",
+            "network-interface": "eth2:10",
+            "local-ipv4-address": "192.0.2.202",
+            "peer-ipv4-address": "192.0.2.201",
+            "local-as": 65000,
+            "peer-as": 65000
+        }
+    ],
+    "bgp-raw-update-files": [
+        "/tmp/rx1.bgp",
+        "/tmp/rx2.bgp",
+        "/tmp/rx1-withdraw.bgp",
+        "/tmp/rx2-withdraw.bgp"
+    ]
+}
