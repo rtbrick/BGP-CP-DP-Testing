@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
+"""
+BNG Blaster - BGP Convergence Report 
+
+Author: Christian Giese
+
+Copyright (C) 2020-2024, RtBrick, Inc.
+SPDX-License-Identifier: BSD-3-Clause
+"""
 import argparse
-import requests
 import sys
 import logging
 import time

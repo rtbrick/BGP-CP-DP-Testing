@@ -6,21 +6,30 @@ This project demonstrates how to measure the convergence between the BGP Control
 
 ![test](test.png)
 
-The BNG Blaster calculates the CP/DP convergence time based on following event timestamps:
+In the BNG Blaster setup, a traffic stream is established for each prefix. Each traffic stream includes multiple timestamps:
 
-+ **T1**: Start sending BGP withdraw from RX1
++ The timestamp **rx-first-epoch** tracks the time of the first packet received on one of the RX interfaces.
++ The timestamp **rx-interface-changed-epoch** tracks the time if a packet is received on a different interface than the previous packet of the same stream.
++ The timestamp **rx-last-epoch** tracks the time of the last packet received.
+
+Based on these timestamps, BNG Blaster calculates the CP/DP convergence time.
+
+The following events and their corresponding timestamps are derived:
+
++ **T1**: Start sending BGP update from RX1
 + **T2**: Start sending BGP withdraw from RX1
-+ **T3**: Start sending BGP withdraw from RX3
-+ **S1**: All streams received on RX1
-+ **S2**: All streams received on RX2
-+ **S3**: No streams received on RX2
++ **T3**: Start sending BGP withdraw from RX2
++ **S1**: All streams received on RX1 (most recent `rx-first-epoch`)
++ **S2**: All streams received on RX2 (most recent `rx-interface-changed-epoch`)
++ **S3**: No streams received on RX2 (most recent `rx-last-epoch`)
 
-Convergence Times:
+Using these timestamps, the convergence times are calculated as follows:
 
-+ `C1 = S1 - T1`	Initial Convergence Time
-+ `C2 = S2 - T2`	Switchover from RX1 to RX2
-+ `C3 = S3 - T3`	Delete Time
++ `C1 = S1 - T1`  Initial Convergence Time
++ `C2 = S2 - T2`  Switchover from RX1 to RX2
++ `C3 = S3 - T3`  Delete Time
 
+The initial convergence time (C1) represents the delay between the BGP update started from RX1 and the reception of all streams on RX1. The switchover time (C2) measures the transition period during which streams switch from being received on RX1 to RX2. Finally, the delete time (C3) captures the duration until no streams are received on RX2 after the BGP withdraw is initiated from RX2.
 
 ## Prepare Test
 
@@ -33,6 +42,9 @@ Convergence Times:
 scp *.bgp <user>@<blaster-controller>:/tmp/
 scp streams.json <user>@<blaster-controller>:/tmp/
 ```
+
+This example uses the address block `192.0.2.0/24`. This block is defined as "TEST-NET-1" by
+[RFC5735](https://datatracker.ietf.org/doc/html/rfc5735).
 
 ## Run Test
 

@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Simple BNG Blaster Controller Wrapper 
+
+Author: Christian Giese
+
+Copyright (C) 2020-2024, RtBrick, Inc.
+SPDX-License-Identifier: BSD-3-Clause
+"""
 import requests
 import json
 import os
